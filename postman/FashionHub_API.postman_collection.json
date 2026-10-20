@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "FashionHub Mobile E-Commerce API (Gin-Gonic + PostgreSQL)",
+    "description": "Koleksi Postman resmi untuk pengujian seluruh endpoint RESTful API FashionHub sesuai spesifikasi PRD Bagian 6.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api/v1"
+    },
+    {
+      "key": "session_id",
+      "value": "budi-demo-session-001"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Produk & Katalog",
+      "item": [
+        {
+          "name": "GET All Products (Pagination & Filter)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?category=&page=1&limit=24&sort=newest",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "",
+                  "description": "Men atau Women (kosongkan untuk semua)"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "24"
+                },
+                {
+                  "key": "sort",
+                  "value": "newest",
+                  "description": "newest | price_asc | price_desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Products by Category (Men)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?category=Men&page=1&limit=24",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Men"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "24"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Product Detail & Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Keranjang Belanja (Cart)",
+      "item": [
+        {
+          "name": "GET Cart Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Session-ID",
+                "value": "{{session_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Add Item to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Session-ID",
+                "value": "{{session_id}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": 1,\n  \"quantity\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Cart Item Quantity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Session-ID",
+                "value": "{{session_id}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/cart/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETE Remove Cart Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Session-ID",
+                "value": "{{session_id}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cart/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Transaksi & Checkout",
+      "item": [
+        {
+          "name": "POST Checkout & Generate Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Session-ID",
+                "value": "{{session_id}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contact\": {\n    \"email\": \"user@example.com\"\n  },\n  \"shipping\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"address\": \"Jl. Merdeka No. 45\",\n    \"zip_code\": \"10110\",\n    \"phone\": \"08123456789\"\n  },\n  \"payment\": {\n    \"card_number\": \"4111222233334444\",\n    \"expiry_date\": \"12/28\",\n    \"cvv\": \"123\"\n  },\n  \"coupon_code\": \"FASHION10\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/checkout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "checkout"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Kontak & Pesan",
+      "item": [
+        {
+          "name": "POST Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Budi Santoso\",\n  \"email\": \"budi@example.com\",\n  \"phone\": \"08123456789\",\n  \"message\": \"Halo FashionHub, apakah ukuran Trench Coat tersedia untuk tinggi 178cm?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/contact",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contact"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

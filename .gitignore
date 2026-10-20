@@ -1,0 +1,35 @@
+# Environment dan kredensial
+.env
+.env.*
+!.env.example
+backend/.env
+
+# Kunci dan sertifikat rahasia
+*.pem
+*.key
+
+# Go
+vendor/
+*.exe
+*.test
+coverage.out
+
+# Flutter dan Dart
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/android/local.properties
+mobile/android/key.properties
+
+# File lokal dan log
+flutter_error.log
+
+# IDE
+.idea/
+.vscode/
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
